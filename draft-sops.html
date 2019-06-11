@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>The Sops 2 Document Format</title>
+  <title>The Sops Document Format</title>
 
   
 <style type="text/css">/*<![CDATA[*/
@@ -285,10 +285,10 @@ ul.toc li {
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Conventions and Terminology">
 <link href="#rfc.section.3" rel="Chapter" title="3 Sops Design Rationale and Overview (#sops-rational)">
-<link href="#rfc.section.4" rel="Chapter" title="4 Sops Metadata (#sops-metadata)">
-<link href="#rfc.section.5" rel="Chapter" title="5 Document Encoding and Decoding (#encoding-decoding)">
-<link href="#rfc.section.6" rel="Chapter" title="6 Document Key Splitting (#document-key-splitting)">
-<link href="#rfc.section.7" rel="Chapter" title="7 Contributors">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Document key encryption (#doc-key-encrypt)">
+<link href="#rfc.section.4" rel="Chapter" title="4 Document Encoding and Decoding (#encoding-decoding)">
+<link href="#rfc.section.5" rel="Chapter" title="5 Document Key Splitting (#document-key-splitting)">
+<link href="#rfc.section.6" rel="Chapter" title="6 Contributors">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -296,10 +296,10 @@ ul.toc li {
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Vehent, J." />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-sops2-latest" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-sops-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2019-11" />
-  <meta name="dct.abstract" content="foo" />
-  <meta name="description" content="foo" />
+  <meta name="dct.abstract" content="The Sops document format stores configuration files in a structured format that protect the confidentiality of values and the integrity of the entire document." />
+  <meta name="description" content="The Sops document format stores configuration files in a structured format that protect the confidentiality of values and the integrity of the entire document." />
 
 </head>
 
@@ -325,11 +325,11 @@ ul.toc li {
     </tbody>
   </table>
 
-  <p class="title">The Sops 2 Document Format<br />
-  <span class="filename">draft-sops2-latest</span></p>
+  <p class="title">The Sops Document Format<br />
+  <span class="filename">draft-sops-latest</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>foo</p>
+<p>The Sops document format stores configuration files in a structured format that protect the confidentiality of values and the integrity of the entire document.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
@@ -350,13 +350,13 @@ ul.toc li {
 </li>
 <li>3.   <a href="#rfc.section.3">Sops Design Rationale and Overview (#sops-rational)</a>
 </li>
-<li>4.   <a href="#rfc.section.4">Sops Metadata (#sops-metadata)</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Document key encryption (#doc-key-encrypt)</a>
 </li>
-<li>5.   <a href="#rfc.section.5">Document Encoding and Decoding (#encoding-decoding)</a>
+</ul><li>4.   <a href="#rfc.section.4">Document Encoding and Decoding (#encoding-decoding)</a>
 </li>
-<li>6.   <a href="#rfc.section.6">Document Key Splitting (#document-key-splitting)</a>
+<li>5.   <a href="#rfc.section.5">Document Key Splitting (#document-key-splitting)</a>
 </li>
-<li>7.   <a href="#rfc.section.7">Contributors</a>
+<li>6.   <a href="#rfc.section.6">Contributors</a>
 </li>
 <li><a href="#rfc.authors">Author's Address</a>
 </li>
@@ -367,9 +367,10 @@ ul.toc li {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">The primary goal of the Sops document format is to provide a secure and practical way to store configuration files at rest. Its intended audience is operational groups that engineer deployment systems for their infrastructure.</p>
-<p id="rfc.section.1.p.2">The Sops 2 document format is designed to be used with structured file formats, such as JSON or YAML. In those formats, Sops 2 guarantees the confidentiality of configuration values stored in a given file, but does not protect the confidentiality of the document structure. In other words: document keys are stored in cleartext and values are encrypted. The reasons for this design choice are detailed in section X.Y.</p>
-<p id="rfc.section.1.p.3">Sops 2 provides strong integrity guarantees to protect against malicious addition, removal and reordering of configuration values.</p>
+<p id="rfc.section.1.p.1">The primary goal of Sops is to provide a secure and practical way to manage configuration files. Its intended audience is operational groups that engineer deployment systems for their infrastructure.</p>
+<p id="rfc.section.1.p.2">The Sops document format is best used with structured file formats, such as JSON or YAML. In those formats, Sops guarantees the confidentiality of configuration values stored in a given file, but does not protect the confidentiality of the document structure. Storing the document structure in cleartext allows for better integration with infrastructure management and versions control tools.</p>
+<p id="rfc.section.1.p.3">In addition to confidentiality, Sops guarantees the integrity of a document to protect against malicious addition, removal and reordering of configuration values.</p>
+<p id="rfc.section.1.p.4">Sops is a specialized document format and is not meant to cover the confidentiality needs of the general population.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#conventions-and-terminology" id="conventions-and-terminology">Conventions and Terminology</a>
 </h1>
@@ -388,24 +389,33 @@ ul.toc li {
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#sops-design-rationale-and-overview-sops-rational" id="sops-design-rationale-and-overview-sops-rational">Sops Design Rationale and Overview (#sops-rational)</a>
 </h1>
-<p id="rfc.section.3.p.1">foo</p>
+<p id="rfc.section.3.p.1">The operation of internet services requires operational teams to manage configuration files that contain sensitive information, such as cryptographic keys and password. Leaking or modifying this information can have critical consequence on services and their users, and it is thus a primary concern of operation teams to maintain the security of configuration files.</p>
+<p id="rfc.section.3.p.2">The Sops document format provides confidentiality and integrity guarantees to safely manage configuration files while offering features that facilitate integration with operational practices, such as:</p>
+<p></p>
+
+<ul>
+<li>integration with YAML and JSON format. Sops documents conserve the structure of documents created in YAML and JSON formats.</li>
+<li>integration with versions control systems (VCS). When used with structured document formats, such as YAML and JSON, Sops exposes the document structure in cleartext and only encrypts leaf values, allowing VCS to display meaningful diffs and handle merge conflicts.</li>
+<li>flexible document key management. Each file is protected by a document key that is itself protected by one or several master keys. The Sops document format is extensible to allows for master keys format to be added easily as the industry provides new methods key management.  # Sops Metadata (#sops-metadata)</li>
+</ul>
+<p id="rfc.section.3.p.4">foo</p>
+<h2 id="rfc.section.3.1">
+<a href="#rfc.section.3.1">3.1.</a> <a href="#document-key-encryption-doc-key-encrypt" id="document-key-encryption-doc-key-encrypt">Document key encryption (#doc-key-encrypt)</a>
+</h2>
+<p id="rfc.section.3.1.p.1">At a minimum, implementations of the Sops document format SHOULD support master key protocols OpenPGP, RSA OAEP and AES256-GCM.</p>
 <h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#sops-metadata-sops-metadata" id="sops-metadata-sops-metadata">Sops Metadata (#sops-metadata)</a>
+<a href="#rfc.section.4">4.</a> <a href="#document-encoding-and-decoding-encoding-decoding" id="document-encoding-and-decoding-encoding-decoding">Document Encoding and Decoding (#encoding-decoding)</a>
 </h1>
 <p id="rfc.section.4.p.1">foo</p>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#document-encoding-and-decoding-encoding-decoding" id="document-encoding-and-decoding-encoding-decoding">Document Encoding and Decoding (#encoding-decoding)</a>
+<a href="#rfc.section.5">5.</a> <a href="#document-key-splitting-document-key-splitting" id="document-key-splitting-document-key-splitting">Document Key Splitting (#document-key-splitting)</a>
 </h1>
 <p id="rfc.section.5.p.1">foo</p>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#document-key-splitting-document-key-splitting" id="document-key-splitting-document-key-splitting">Document Key Splitting (#document-key-splitting)</a>
+<a href="#rfc.section.6">6.</a> <a href="#contributors" id="contributors">Contributors</a>
 </h1>
-<p id="rfc.section.6.p.1">foo</p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#contributors" id="contributors">Contributors</a>
-</h1>
-<p id="rfc.section.7.p.1">Many people have contributed to the Sops open source initiative and they are acknowledged on github.com/mozilla/sops.</p>
-<p id="rfc.section.7.p.2">In addition, we would like to thank Adrian Utrilla, AJ Bahnken, Jeremy Orem and Daniel Thorn from Mozilla.</p>
+<p id="rfc.section.6.p.1">Many people have contributed to the Sops open source initiative and they are acknowledged on github.com/mozilla/sops.</p>
+<p id="rfc.section.6.p.2">In addition, we would like to thank Adrian Utrilla, AJ Bahnken, Jeremy Orem and Daniel Thorn from Mozilla.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Author's Address</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
