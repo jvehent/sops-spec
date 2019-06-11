@@ -1,3 +1,4 @@
+---
 docname: draft-sops2-latest
 title: The Sops 2 Document Format
 abbrev: Sops 2
